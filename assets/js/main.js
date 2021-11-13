@@ -116,7 +116,7 @@ $(() => {
         return price;
     };
 
-    let productOnClick = (element, product) => {
+    let productOnClick = (event, element, product) => {
         if (product.leftover > 0) {
             product.leftover--;
             getBasketProductById(product.id).leftover++;
@@ -124,7 +124,7 @@ $(() => {
         }
     };
 
-    let basketProductOnClick = (element, product) => {
+    let basketProductOnClick = (event, element, product) => {
         if (product.leftover > 0) {
             product.leftover--;
             getProductById(product.id).leftover++;
@@ -138,6 +138,20 @@ $(() => {
             product.leftover = 0;
         });
         updateProductsList();
+    }
+
+    let selectAllProductUnits = id => {
+        let product = getProductById(id);
+        let basketProduct = getBasketProductById(id);
+        basketProduct.leftover += product.leftover;
+        product.leftover = 0;
+    }
+
+    let deselectAllProductUnits = id => {
+        let product = getProductById(id);
+        let basketProduct = getBasketProductById(id);
+        product.leftover += basketProduct.leftover;
+        basketProduct.leftover = 0;
     }
 
     let deselectAllProducts = () => {
@@ -162,7 +176,13 @@ $(() => {
             productsBlock.append(product.getTemplate());
             let element = productsBlock.children().eq(i++);
             if (product.leftover !== 0) {
-                element.on('click', () => productOnClick(element, product));
+                element.on('click', e => productOnClick(e, element, product));
+                element.on('auxclick', e => {
+                    if (e.which === 2) {
+                        selectAllProductUnits(product.id);
+                        updateProductsList();
+                    }
+                });
             } else {
                 element.addClass('sold-out');
             }
@@ -172,7 +192,13 @@ $(() => {
             if (product.leftover !== 0) {
                 basketBlock.append(product.getTemplate());
                 let element = basketBlock.children().eq(i++);
-                element.on('click', () => basketProductOnClick(element, product));
+                element.on('click', e => basketProductOnClick(e, element, product));
+                element.on('auxclick', e => {
+                    if (e.which === 2) {
+                        deselectAllProductUnits(product.id);
+                        updateProductsList();
+                    }
+                });
             }
         });
     }
