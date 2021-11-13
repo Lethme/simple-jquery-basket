@@ -56,7 +56,11 @@
     .products,
     .basket {
         height: auto;
+    }
+    .products .container,
+    .basket .container {
         overflow-x: auto;
+        padding: 15px 30px;
     }
     .products {
         border: none;
