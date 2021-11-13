@@ -25,7 +25,6 @@ $(() => {
     };
 
     let products = [{
-            id: 1,
             title: "Product 1",
             description: "Product 1 Description",
             price: 50,
@@ -34,7 +33,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 2,
             title: "Product 2",
             description: "Product 2 Description",
             price: 94,
@@ -43,7 +41,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 3,
             title: "Product 3",
             description: "Product 3 Description",
             price: 666,
@@ -52,7 +49,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 4,
             title: "Product 4",
             description: "Product 4 Description",
             price: 25,
@@ -61,7 +57,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 5,
             title: "Product 5",
             description: "Product 5 Description",
             price: 100,
@@ -70,7 +65,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 6,
             title: "Product 6",
             description: "Product 6 Description",
             price: 1000,
@@ -79,7 +73,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 7,
             title: "Product 7",
             description: "Product 7 Description",
             price: 2500,
@@ -88,7 +81,6 @@ $(() => {
             getTemplate: function() { return createProductTemplate(this); }
         },
         {
-            id: 8,
             title: "Product 8",
             description: "Product 8 Description",
             price: 10000,
@@ -99,6 +91,13 @@ $(() => {
     ];
 
     let basket = [];
+
+    products.forEach((product, i) => {
+        product.id = i;
+        let basketProduct = Object.assign({}, product);
+        basketProduct.leftover = 0;
+        basket.push(basketProduct);
+    });
 
     let getProductById = id => {
         return products.filter((pr, i) => pr.id === id)[0];
@@ -116,12 +115,6 @@ $(() => {
 
         return price;
     };
-
-    products.forEach(product => {
-        let basketProduct = Object.assign({}, product);
-        basketProduct.leftover = 0;
-        basket.push(basketProduct);
-    });
 
     let productOnClick = (element, product) => {
         if (product.leftover > 0) {
